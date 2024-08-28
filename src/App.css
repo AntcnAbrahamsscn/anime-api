@@ -1,0 +1,237 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #b2e0df;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background: rgb(149, 181, 209);
+    background: linear-gradient(
+        150deg,
+        rgba(149, 181, 209, 1) 0%,
+        rgba(0, 4, 5, 1) 100%
+    );
+    box-sizing: border-box;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+    padding: 2em 5em;
+}
+
+main {
+    width: 100%;
+}
+
+.search-bar {
+    display: flex;
+    gap: 1em;
+    width: 100%;
+}
+
+.search-bar input {
+    flex: 1;
+    border-radius: 50px;
+    padding: 0.5em;
+    border: 1px solid #c2bebf;
+    background: none;
+    color: white;
+}
+
+.favorites-icon {
+    background: url("./assets/heart.png") left center no-repeat;
+    width: 70px;
+    cursor: pointer;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1em;
+    margin: 0 5em;
+    min-height: 100vh;
+}
+
+.character-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 4px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    /* overflow: hidden; */
+    height: 400px;
+}
+
+.flip-card {
+    width: 100%;
+    height: 100%;
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s;
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.flip-card-front {
+    background-color: #bbb;
+}
+
+.flip-card-back {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    transform: rotateY(180deg);
+    padding: 1em;
+}
+
+.character-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.character-details {
+    text-align: left;
+    padding: 0.5em;
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.character-stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6em;
+    background: linear-gradient(
+        150deg,
+        rgba(124, 166, 199, 0.3) 0%,
+        rgba(228, 228, 228, 0.1) 100%
+    );
+    border-radius: 2px;
+}
+
+.like-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+}
+
+.heart-bg {
+    background-color: rgba(208, 214, 248, 0.05);
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 100ms ease, box-shadow 100ms ease;
+}
+
+.heart-bg:hover {
+    background-color: rgba(208, 214, 248, 0.1);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+}
+
+.heart-icon {
+    height: 100px;
+    width: 100px;
+    background: url("assets/heart.png") left center no-repeat;
+    cursor: pointer;
+    position: absolute;
+}
+
+.heart-icon.liked {
+    animation: like-animation 0.7s steps(28) forwards;
+}
+
+@keyframes like-animation {
+    to {
+        background-position: right;
+    }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Default: 6 columns */
+.grid {
+    grid-template-columns: repeat(6, 1fr);
+    margin: 0 5em;
+    min-height: 100vh;
+}
+
+@media (max-width: 1600px) {
+    /* 5 columns at 1300px or less */
+    .grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    header {
+        padding: 1em;
+    }
+}
+
+@media (max-width: 1100px) {
+    /* 4 columns at 1100px or less */
+    .grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    header {
+        padding: 1em;
+    }
+}
+
+@media (max-width: 800px) {
+    /* 2 columns at 800px or less */
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        margin: 0 1em;
+    }
+
+    header {
+        padding: 1em;
+    }
+}
