@@ -8,9 +8,9 @@ body {
     margin: 0;
     padding: 0;
     background-color: #b2e0df;
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
     font-family: Arial, Helvetica, sans-serif;
     background: rgb(149, 181, 209);
     background: linear-gradient(
@@ -19,38 +19,11 @@ body {
         rgba(0, 4, 5, 1) 100%
     );
     box-sizing: border-box;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    width: 100vw;
-    padding: 2em 5em;
+    width: 100%;
 }
 
 main {
     width: 100%;
-}
-
-.search-bar {
-    display: flex;
-    gap: 1em;
-    width: 100%;
-}
-
-.search-bar input {
-    flex: 1;
-    border-radius: 50px;
-    padding: 0.5em;
-    border: 1px solid #c2bebf;
-    background: none;
-    color: white;
-}
-
-.favorites-icon {
-    background: url("./assets/heart.png") left center no-repeat;
-    width: 70px;
-    cursor: pointer;
 }
 
 .grid {
@@ -61,20 +34,11 @@ main {
     min-height: 100vh;
 }
 
-.character-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border-radius: 4px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    /* overflow: hidden; */
-    height: 400px;
-}
-
 .flip-card {
     width: 100%;
     height: 100%;
     perspective: 1000px;
+    height: 400px;
 }
 
 .flip-card-inner {
@@ -85,9 +49,47 @@ main {
     transform-style: preserve-3d;
 }
 
-.flip-card:hover .flip-card-inner {
+.character-card.flipped .flip-card-inner {
     transform: rotateY(180deg);
+    box-shadow: rgb(27, 36, 46) 0px 20px 30px -10px;
+}
+
+.check-icon {
+    width: 30px;
+    /* background-color: rgba(208, 214, 248, 0.05); */
+    height: 30px;
+}
+.check-icon-container {
+    width: 60px;
+    background-color: rgba(208, 214, 248, 0.05);
+    height: 60px;
+    border-radius: 50%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+}
+.check-icon-container:hover {
+    background-color: rgba(208, 214, 248, 0.1);
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+}
+.character-image {
+    filter: grayscale(50%);
+}
+.character-image:hover {
+    filter: grayscale(0%);
+}
+
+.marked-favorite > div {
+    background: url(./assets/heart.png);
+    width: 50px;
+    height: 50px;
+    background-position: -1025px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    opacity: 0.5;
 }
 
 .flip-card-front,
@@ -100,10 +102,19 @@ main {
     flex-direction: column;
     justify-content: space-between;
     text-align: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+    transform-origin: center;
 }
 
-.flip-card-front {
-    background-color: #bbb;
+.flip-card-front:hover {
+    transform: scale(1.01);
+}
+
+.testing-buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .flip-card-back {
@@ -117,6 +128,8 @@ main {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: 1;
+    position: relative;
 }
 
 .character-details {
@@ -126,10 +139,23 @@ main {
     overflow-y: auto;
 }
 
+.p-minor {
+    font-size: 0.8em;
+    border-radius: 2px;
+    border-bottom: 1.2px solid white;
+    padding: 1em;
+}
+/* .p-minor p {
+    font-size: 0.8em;
+    border-radius: 2px;
+    border-bottom: 1px solid white;
+} */
+
 .character-stats {
     display: flex;
     justify-content: space-between;
     padding: 0.6em;
+    font-size: 0.8em;
     background: linear-gradient(
         150deg,
         rgba(124, 166, 199, 0.3) 0%,
@@ -234,4 +260,26 @@ main {
     header {
         padding: 1em;
     }
+}
+
+.check-icon-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+    background-color: rgba(208, 214, 248, 0.05);
+}
+
+.check-icon-container:hover {
+    background-color: rgba(208, 214, 248, 0.1);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+}
+
+.check-icon {
+    width: 30px;
+    height: 30px;
+    color: white; /* Adjust the color if needed */
 }

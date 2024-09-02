@@ -1,10 +1,3 @@
-// export interface Character {
-//     title: string;
-//     director: string;
-//     producer: string;
-// 	id: number;
-// }
-
 export interface ApiData {
     title: string;
     director: string;
@@ -18,7 +11,7 @@ export interface ApiData {
 
 }
 
-async function getPirates(): Promise<ApiData[]> {
+async function getMovies(): Promise<ApiData[]> {
     const response = await fetch(
         "https://ghibliapi.vercel.app/films/"
     );
@@ -29,4 +22,4 @@ async function getPirates(): Promise<ApiData[]> {
     return jsonData;
 }
 
-export { getPirates };
+export { getMovies };

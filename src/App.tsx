@@ -1,21 +1,25 @@
 import "./App.css";
-import { ApiData, getPirates } from "./data/data";
+import "./header.css";
+import { ApiData, getMovies } from "./data/data";
 import { useEffect, useState } from "react";
+import Header from "./Header";
+import Card from "./Card";
 
 function App() {
     const [characters, setCharacters] = useState<ApiData[]>([]);
     const [searchInput, setSearchInput] = useState<string>("");
-    const [likedCharacters, setLikedCharacters] = useState<boolean[]>([]);
     const [favorites, setFavorites] = useState<ApiData[]>([]);
     const [showFavorites, setShowFavorites] = useState<boolean>(false);
+    const [flippedCharacters, setFlippedCharacters] = useState<boolean[]>([]);
+    const [checkedStates, setCheckedStates] = useState<{ [title: string]: boolean }>({});
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data: ApiData[] = await getPirates();
+                const data: ApiData[] = await getMovies();
                 console.log("Data from API:", data);
                 setCharacters(data);
-                setLikedCharacters(new Array(data.length).fill(false));
+                setFlippedCharacters(new Array(data.length).fill(false));
             } catch (error) {
                 console.log("API failed with error: ", error.message);
             }
@@ -25,33 +29,25 @@ function App() {
 
     const handleShowFavorites = (): void => {
         setShowFavorites((prevShowFavorites) => !prevShowFavorites);
+        setFlippedCharacters(new Array(characters.length).fill(false)); 
     };
 
-    const handleLike = (index: number) => {
-        setLikedCharacters((prevLikedCharacters) => {
-            const newLikedCharacters = [...prevLikedCharacters];
-            newLikedCharacters[index] = !newLikedCharacters[index];
-
-            setFavorites((prevFavorites) => {
-                const character = characters[index];
-                if (newLikedCharacters[index]) {
-                    if (
-                        !prevFavorites.some(
-                            (fav) => fav.title === character.title
-                        )
-                    ) {
-                        return [...prevFavorites, character];
-                    }
-                } else {
-                    return prevFavorites.filter(
-                        (fav) => fav.title !== character.title
-                    );
-                }
-                return prevFavorites;
-            });
-
-            return newLikedCharacters;
+    const handleLike = (character: ApiData) => {
+        setFavorites((prevFavorites) => {
+            if (prevFavorites.some((fav) => fav.title === character.title)) {
+                return prevFavorites.filter(
+                    (fav) => fav.title !== character.title
+                );
+            } else {
+                return [...prevFavorites, character];
+            }
         });
+    };
+
+    const handleFlip = (index: number) => {
+        setFlippedCharacters((prevFlippedCharacters) =>
+            prevFlippedCharacters.map((flipped, i) => i === index ? !flipped : false)
+        );
     };
 
     const filteredCharacters = characters.filter((character) =>
@@ -66,73 +62,38 @@ function App() {
             : 0
     );
 
+    const handleCheckToggle = (title: string) => {
+        setCheckedStates((prevCheckedStates) => ({
+            ...prevCheckedStates,
+            [title]: !prevCheckedStates[title],
+        }));
+    };
+
     return (
         <div className="app">
-            <header>
-                <div className="search-bar">
-                    <input
-                        type="text"
-                        placeholder="Search..."
-                        onChange={(e) => setSearchInput(e.target.value)}
-                    />
-                    <div
-                        className="favorites-icon"
-                        onClick={handleShowFavorites}
-                    ></div>
-                </div>
-            </header>
+            <Header
+                searchInput={searchInput}
+                setSearchInput={setSearchInput}
+                showFavorites={showFavorites}
+                handleShowFavorites={handleShowFavorites}
+            />
             <main>
                 <div className="grid">
                     {(showFavorites ? favorites : sortedCharacters).map(
                         (character, index) => (
-                            <div className="character-card" key={index}>
-                                <div className="flip-card">
-                                    <div className="flip-card-inner">
-                                        <div className="flip-card-front">
-                                            <img
-                                                src={character.image}
-                                                alt={character.title}
-                                                className="character-image"
-                                            />
-                                        </div>
-                                        <div className="flip-card-back">
-                                            <h3>{character.title}</h3>
-                                            <p className="p-minor">
-                                                {character.director}
-                                            </p>
-                                            <div className="character-details">
-                                                <p>{character.description}</p>
-                                            </div>
-                                            <div className="character-stats">
-                                                <p>{character.rt_score}/100</p>
-                                                <p>{character.release_date}</p>
-                                            </div>
-                                            <div
-                                                className={`like-button-container ${
-                                                    likedCharacters[index]
-                                                        ? "liked"
-                                                        : ""
-                                                }`}
-                                                onClick={() =>
-                                                    handleLike(index)
-                                                }
-                                            >
-                                                <div className="heart-bg">
-                                                    <div
-                                                        className={`heart-icon ${
-                                                            likedCharacters[
-                                                                index
-                                                            ]
-                                                                ? "liked"
-                                                                : ""
-                                                        }`}
-                                                    ></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <Card
+                                key={character.title}
+                                character={character}
+                                isFlipped={flippedCharacters[index]}
+                                isLiked={favorites.some(
+                                    (fav) => fav.title === character.title
+                                )}
+                                onFlip={() => handleFlip(index)}
+                                onLike={() => handleLike(character)}
+                                showFavorites={showFavorites}
+                                isChecked={!!checkedStates[character.title]}
+                                onCheck={() => handleCheckToggle(character.title)}
+                            />
                         )
                     )}
                 </div>

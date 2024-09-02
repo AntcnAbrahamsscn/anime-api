@@ -1,0 +1,33 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+    padding: 2em 5em;
+}
+
+.search-bar {
+    display: flex;
+    gap: 1em;
+    width: 100%;
+}
+
+.search-bar input {
+    flex: 1;
+    border-radius: 3px;
+    padding: 0.5em;
+    border: none;
+    background: rgb(46, 209, 247);
+    background: linear-gradient(
+        123deg,
+        rgba(192, 216, 221, 0.387) 0%,
+        rgba(185, 184, 192, 0.264) 100%
+    );
+    color: white;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.favorites-icon {
+    background: url("./assets/heart.png") left center no-repeat;
+    width: 70px;
+    cursor: pointer;
+}
